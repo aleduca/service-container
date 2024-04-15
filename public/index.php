@@ -17,7 +17,8 @@ $container->bind(UserRepositoryInterface::class, function () {
 
 $container->bind('key', 'value');
 
+
 Application::resolve($container);
 
-$router = new Router;
+$router = new Router($container);
 $router->create($routes);
