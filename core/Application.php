@@ -2,6 +2,8 @@
 
 namespace core;
 
+use DI\Container;
+
 class Application
 {
   private static Container $container;

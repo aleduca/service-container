@@ -6,22 +6,24 @@ use app\interfaces\UserRepositoryInterface;
 use app\library\Auth;
 use app\library\NewsLetter;
 use core\Application;
+use DI\Attribute\Inject;
 
 class HomeController
 {
   public function __construct(
     private UserRepositoryInterface $userRepository,
-    private Auth $auth
   ) {
   }
 
+  #[Inject(['teste' => 'key'])]
   public function index(
-    NewsLetter $newsLetter
+    NewsLetter $newsLetter,
+    $teste
   ) {
     dd(
       $this->userRepository->find(123),
-      $this->auth->auth(),
-      $newsLetter->send()
+      $newsLetter->send(),
+      $teste
     );
   }
 }

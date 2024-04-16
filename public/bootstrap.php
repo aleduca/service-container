@@ -2,20 +2,22 @@
 
 declare(strict_types=1);
 
-use app\interfaces\UserRepositoryInterface;
-use app\repositories\UserRepository;
 use core\Application;
-use core\Container;
-use core\ResolveContainer;
+use DI\ContainerBuilder;
+
+use function DI\create;
 
 require '../vendor/autoload.php';
 require '../app/definitions/constants.php';
 
-$container = new Container(
-  new ResolveContainer
-);
+$container = new ContainerBuilder();
+$container->useAttributes(true);
+$container->addDefinitions(APP_PATH . '/definitions/container.php');
+// $container->addDefinitions([
+//   UserRepositoryInterface::class => create(UserRepository::class),
+//   'key' => 'value'
+// ]);
 
-$container->addDefinitions('../app/definitions/container.php');
-
+$container = $container->build();
 
 Application::resolve($container);

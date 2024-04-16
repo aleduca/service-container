@@ -2,7 +2,7 @@
 
 namespace core;
 
-use ReflectionMethod;
+use DI\Container;
 
 class Router
 {
@@ -10,7 +10,7 @@ class Router
   private string $method;
 
   public function __construct(
-    private ContainerInterface $container
+    private Container $container
   ) {
   }
 
@@ -30,12 +30,7 @@ class Router
     if (class_exists($this->controller)) {
       $controller = $this->container->get($this->controller);
       if (method_exists($controller, $this->method)) {
-        return $controller->{$this->method}(
-          ...$this->container->resolveContainer->parameters(
-            new ReflectionMethod($controller, $this->method),
-            $this->container
-          ),
-        );
+        return $this->container->call([$this->controller, $this->method]);
       }
     }
   }
