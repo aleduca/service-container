@@ -10,16 +10,16 @@ use core\Application;
 class HomeController
 {
   public function __construct(
+    private UserRepositoryInterface $userRepository,
     private Auth $auth
   ) {
   }
 
   public function index(
-    UserRepositoryInterface $userRepository,
     NewsLetter $newsLetter
   ) {
     dd(
-      $userRepository->find(123),
+      $this->userRepository->find(123),
       $this->auth->auth(),
       $newsLetter->send()
     );

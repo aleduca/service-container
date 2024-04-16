@@ -2,8 +2,6 @@
 
 namespace core;
 
-use app\library\Auth;
-use app\repositories\UserRepository;
 use ReflectionMethod;
 
 class Router
@@ -12,7 +10,7 @@ class Router
   private string $method;
 
   public function __construct(
-    private Container $container
+    private ContainerInterface $container
   ) {
   }
 
@@ -31,10 +29,12 @@ class Router
   {
     if (class_exists($this->controller)) {
       $controller = $this->container->get($this->controller);
-      $method = new ReflectionMethod($controller, $this->method);
       if (method_exists($controller, $this->method)) {
         return $controller->{$this->method}(
-          ...$this->container->resolveParameters($method),
+          ...$this->container->resolveContainer->parameters(
+            new ReflectionMethod($controller, $this->method),
+            $this->container
+          ),
         );
       }
     }
